@@ -10,10 +10,23 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            TopView()
-            BalanceView()
-            HButtonsView()
+        TabView() {
+            ScrollView(.vertical) {
+                TopView()
+                BalanceView()
+                HButtonsView()
+                BarChartView()
+                ExpensesView()
+            }.tabItem {
+                Image(systemName: "creditcard.fill")
+                Text("Home")
+                
+            }.tag(1)
+            Text("Tab Content 2").tabItem {
+                Image(systemName: "signature")
+                Text("Something")
+                
+            }.tag(2)
         }
     }
 }
@@ -99,5 +112,91 @@ struct HButtonsView: View {
             ButtonTwoView()
         }
         .padding()
+    }
+}
+
+struct Bar: Hashable {
+    let height: CGFloat
+    let month: String
+}
+
+struct BarChartView: View {
+    let bars = [Bar(height: 37, month: "Jan"),
+                Bar(height: 127, month: "Feb"),
+                Bar(height: 44, month: "Mar"),
+                Bar(height: 26, month: "Apr"),
+                Bar(height: 75, month: "May"),
+                Bar(height: 50, month: "Jun"),
+                Bar(height: 88, month: "Jul"),
+                Bar(height: 36, month: "Aug"),
+                Bar(height: 65, month: "Sep"),
+                Bar(height: 60, month: "Oct"),
+                Bar(height: 80, month: "Nov"),
+                Bar(height: 71, month: "Dec")]
+    
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .bottom) {
+                
+                ForEach(bars, id: \.self) { bar in
+                    VStack {
+                        Rectangle()
+                            .frame(width: 38, height: bar.height)
+                            .cornerRadius(8)
+                        
+                        Text(bar.month)
+                            .fontWeight(.semibold)
+                    }
+                }
+            }
+            .padding(.horizontal)
+        }
+    }
+}
+
+struct ExpensesView: View {
+    var body: some View {
+        VStack {
+            HStack {
+                Text("March 2020:")
+                    .font(.title)
+                    .fontWeight(.heavy)
+                
+                Spacer()
+                
+                Text("$5,156 😸")
+                    .font(.title)
+                    .fontWeight(.heavy)
+                    .foregroundColor(Color.blue)
+            }
+            HStack {
+                Text("Details")
+                    .bold()
+                    .foregroundColor(.secondary)
+                    .padding(.vertical)
+                Spacer()
+            }
+            
+            ForEach(0 ..< 15) { item in
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("MacBook Pro")
+                            .fontWeight(.bold)
+                        Text("03/12/20  11:10AM")
+                            .foregroundColor(.secondary)
+                    }
+                    Spacer()
+                    Text("$2,499")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    
+                }
+            }
+        }
+    .cornerRadius(12)
+        .padding()
+        .background(Color(.secondarySystemBackground))
+        .padding([.top, .leading, .trailing])
+        .cornerRadius(12)
     }
 }
